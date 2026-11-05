@@ -4,8 +4,8 @@ Problem ID: CP-023
 
 Team Members
 
-1. Name:B. Durgashree| USN: [Enter Your USN]
-2. Name: DANIYA ALI | USN: [Enter USN]
+1. Name:B.Durgashree| USN: [1AT24CS038]
+2. Name: DANIYA ALI | USN: [1AT24CS047]
 
 How to Run the Program
 
