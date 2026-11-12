@@ -1,3 +1,4 @@
+
 package lifelink;
 
 import lifelink.model.Donor;
@@ -11,6 +12,7 @@ import lifelink.service.ShortageReportService;
 import lifelink.service.BloodRequestService;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -55,10 +57,7 @@ public class Main {
             System.out.println("10. View Hospital Requests");
             System.out.println("0. Exit");
 
-            System.out.print("\nEnter your choice: ");
-
-            choice = sc.nextInt();
-            sc.nextLine();
+            choice = readInteger(sc, "\nEnter your choice: ");
 
             switch (choice) {
 
@@ -76,9 +75,12 @@ public class Main {
                     System.out.print("Enter Phone Number: ");
                     String phone = sc.nextLine();
 
-                    System.out.print("Enter Last Donation Date (YYYY-MM-DD): ");
                     LocalDate donationDate =
-                            LocalDate.parse(sc.nextLine());
+                            readDate(sc, "Enter Last Donation Date (YYYY-MM-DD): ");
+
+                    if (donationDate == null) {
+                        break;
+                    }
 
                     Donor donor = new Donor(
                             donorId,
@@ -114,13 +116,19 @@ public class Main {
                     System.out.print("Enter Blood Group: ");
                     String bloodGroup = sc.nextLine();
 
-                    System.out.print("Enter Number of Units: ");
-                    int units = sc.nextInt();
-                    sc.nextLine();
+                    int units = readInteger(sc, "Enter Number of Units: ");
 
-                    System.out.print("Enter Collection Date (YYYY-MM-DD): ");
+                    if (units <= 0) {
+                        System.out.println("Invalid units! Enter a positive number.");
+                        break;
+                    }
+
                     LocalDate collectionDate =
-                            LocalDate.parse(sc.nextLine());
+                            readDate(sc, "Enter Collection Date (YYYY-MM-DD): ");
+
+                    if (collectionDate == null) {
+                        break;
+                    }
 
                     BloodStock stock = new BloodStock(
                             stockId,
@@ -175,9 +183,13 @@ public class Main {
 
                 case 7:
 
-                    System.out.print("Enter Minimum Stock Level: ");
-                    int minimumLevel = sc.nextInt();
-                    sc.nextLine();
+                    int minimumLevel =
+                            readInteger(sc, "Enter Minimum Stock Level: ");
+
+                    if (minimumLevel < 0) {
+                        System.out.println("Minimum stock level cannot be negative!");
+                        break;
+                    }
 
                     shortageService.generateShortageReport(minimumLevel);
 
@@ -202,9 +214,8 @@ public class Main {
                     System.out.print("Enter Required Blood Group: ");
                     String requiredGroup = sc.nextLine();
 
-                    System.out.print("Enter Required Units: ");
-                    int requiredUnits = sc.nextInt();
-                    sc.nextLine();
+                    int requiredUnits =
+                            readInteger(sc, "Enter Required Units: ");
 
                     if (requiredUnits <= 0) {
                         System.out.println("Invalid number of units!");
@@ -249,12 +260,48 @@ public class Main {
 
                 default:
 
-                    System.out.println("Invalid choice! Please try again.");
+                    System.out.println("Invalid choice! Please enter a number from 0 to 10.");
 
             }
 
         } while (choice != 0);
 
         sc.close();
+    }
+
+    // Reads an integer safely from the user
+    private static int readInteger(Scanner sc, String message) {
+
+        while (true) {
+
+            System.out.print(message);
+
+            String input = sc.nextLine();
+
+            try {
+                return Integer.parseInt(input.trim());
+
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input! Please enter a valid number.");
+            }
+        }
+    }
+
+    // Reads a date safely from the user
+    private static LocalDate readDate(Scanner sc, String message) {
+
+        while (true) {
+
+            System.out.print(message);
+
+            String input = sc.nextLine();
+
+            try {
+                return LocalDate.parse(input.trim());
+
+            } catch (DateTimeParseException e) {
+                System.out.println("Invalid date! Please use YYYY-MM-DD format.");
+            }
+        }
     }
 }
