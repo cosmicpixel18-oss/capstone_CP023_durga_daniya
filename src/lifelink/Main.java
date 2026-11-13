@@ -38,24 +38,13 @@ public class Main {
 
         int choice;
 
+        // Display welcome screen
+        displayWelcome();
+
         do {
 
-            System.out.println("\n========================================");
-            System.out.println("               LIFELINK");
-            System.out.println("    Blood Inventory and Donor Matching");
-            System.out.println("========================================");
-
-            System.out.println("1. Register Donor");
-            System.out.println("2. View Donors");
-            System.out.println("3. Add Blood Stock");
-            System.out.println("4. View Blood Stock");
-            System.out.println("5. Search Compatible Blood");
-            System.out.println("6. Find Eligible Donors");
-            System.out.println("7. Generate Shortage Report");
-            System.out.println("8. Expire Old Blood Units");
-            System.out.println("9. Issue Blood to Hospital");
-            System.out.println("10. View Hospital Requests");
-            System.out.println("0. Exit");
+            // Display organized main menu
+            displayMenu();
 
             choice = readInteger(sc, "\nEnter your choice: ");
 
@@ -101,6 +90,8 @@ public class Main {
                     if (donors.isEmpty()) {
                         System.out.println("No donors registered!");
                     } else {
+                        System.out.println("\n===== REGISTERED DONORS =====");
+
                         for (Donor d : donors) {
                             System.out.println("\n" + d);
                         }
@@ -119,7 +110,9 @@ public class Main {
                     int units = readInteger(sc, "Enter Number of Units: ");
 
                     if (units <= 0) {
-                        System.out.println("Invalid units! Enter a positive number.");
+                        System.out.println(
+                                "Invalid units! Enter a positive number."
+                        );
                         break;
                     }
 
@@ -148,6 +141,8 @@ public class Main {
                     if (stocks.isEmpty()) {
                         System.out.println("No blood stock available!");
                     } else {
+                        System.out.println("\n===== AVAILABLE BLOOD STOCK =====");
+
                         for (BloodStock s : stocks) {
                             System.out.println("\n" + s);
                         }
@@ -187,7 +182,9 @@ public class Main {
                             readInteger(sc, "Enter Minimum Stock Level: ");
 
                     if (minimumLevel < 0) {
-                        System.out.println("Minimum stock level cannot be negative!");
+                        System.out.println(
+                                "Minimum stock level cannot be negative!"
+                        );
                         break;
                     }
 
@@ -255,18 +252,63 @@ public class Main {
 
                 case 0:
 
-                    System.out.println("\nThank you for using LifeLink!");
+                    System.out.println("\n================================");
+                    System.out.println("   Thank you for using LifeLink!");
+                    System.out.println("   Stay connected. Save lives!");
+                    System.out.println("================================");
                     break;
 
                 default:
 
-                    System.out.println("Invalid choice! Please enter a number from 0 to 10.");
+                    System.out.println(
+                            "Invalid choice! Please enter a number from 0 to 10."
+                    );
 
             }
 
         } while (choice != 0);
 
         sc.close();
+    }
+
+    // Display welcome screen
+    private static void displayWelcome() {
+
+        System.out.println("\n");
+        System.out.println("========================================");
+        System.out.println("          WELCOME TO LIFELINK");
+        System.out.println("  Blood Inventory and Donor Matching");
+        System.out.println("========================================");
+        System.out.println("Manage donors, blood stock and requests");
+        System.out.println("========================================");
+    }
+
+    // Display organized main menu
+    private static void displayMenu() {
+
+        System.out.println("\n========== MAIN MENU ==========");
+
+        System.out.println("\n--- DONOR MANAGEMENT ---");
+        System.out.println("1. Register Donor");
+        System.out.println("2. View Donors");
+        System.out.println("6. Find Eligible Donors");
+
+        System.out.println("\n--- BLOOD INVENTORY ---");
+        System.out.println("3. Add Blood Stock");
+        System.out.println("4. View Blood Stock");
+        System.out.println("8. Expire Old Blood Units");
+
+        System.out.println("\n--- BLOOD SERVICES ---");
+        System.out.println("5. Search Compatible Blood");
+        System.out.println("7. Generate Shortage Report");
+
+        System.out.println("\n--- HOSPITAL SERVICES ---");
+        System.out.println("9. Issue Blood to Hospital");
+        System.out.println("10. View Hospital Requests");
+
+        System.out.println("\n0. Exit");
+
+        System.out.println("===============================");
     }
 
     // Reads an integer safely from the user
@@ -282,7 +324,9 @@ public class Main {
                 return Integer.parseInt(input.trim());
 
             } catch (NumberFormatException e) {
-                System.out.println("Invalid input! Please enter a valid number.");
+                System.out.println(
+                        "Invalid input! Please enter a valid number."
+                );
             }
         }
     }
@@ -300,7 +344,9 @@ public class Main {
                 return LocalDate.parse(input.trim());
 
             } catch (DateTimeParseException e) {
-                System.out.println("Invalid date! Please use YYYY-MM-DD format.");
+                System.out.println(
+                        "Invalid date! Please use YYYY-MM-DD format."
+                );
             }
         }
     }
